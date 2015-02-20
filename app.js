@@ -4,7 +4,7 @@ var app = express()
 var gpio = require("pi-gpio");
 var pin = 11;
 
-require('coffee-script/register');
+// require('coffee-script/register');
 var Slack = require('slack-client');
 
 var token = 'xoxb-3786970827-DHG6vn48pPyOZMYhko1PqOPB', // Add a bot at https://my.slack.com/services/new/bot and copy the token here.
