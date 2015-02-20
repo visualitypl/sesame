@@ -1,5 +1,6 @@
 var express = require('express')
 var app = express()
+var config = require('./config')
 
 var gpio = require("pi-gpio");
 var pin = 11;
@@ -7,7 +8,7 @@ var pin = 11;
 // require('coffee-script/register');
 var Slack = require('slack-client');
 
-var token = 'xoxb-3786970827-DHG6vn48pPyOZMYhko1PqOPB', // Add a bot at https://my.slack.com/services/new/bot and copy the token here.
+var token = config.SLACK_TOKEN, // Add a bot at https://my.slack.com/services/new/bot and copy the token here.
     autoReconnect = true,
     autoMark = true;
 var slack = new Slack(token, autoReconnect, autoMark);
