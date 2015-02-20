@@ -53,7 +53,7 @@ slack.on('message', function(message) {
 
   console.log('Received: %s %s @%s %s "%s"', type, (channel.is_channel ? '#' : '') + channel.name, user.name, time, text);
 
-  if (type === 'message' && user.name === 'sakir') {
+  if (type === 'message' && (user.name === 'neko' || user.name === 'sakir')) {
     if (text === 'open'){
       response = 'ok';
       channel.send(response);
