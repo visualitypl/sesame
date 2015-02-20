@@ -10,15 +10,18 @@ app.get('/', function (req, res) {
 })
 
 app.get('/open', function (req, res) {
+    console.log('open called!')
     gpio.open(pin, "output", function(err) {});
     gpio.write(pin, 0, function() {});
 
     setTimeout(function() {
         gpio.write(pin, 1, function(){});
     }, 1000);
-    gpio.close(pin);
+    console.log('closed!')
 
-    console.log('open called!')
+    gpio.close(pin);
+    res.send('done!')
+
 });
 var server = app.listen(3000, function () {
 
