@@ -55,6 +55,7 @@ slack.on('message', function(message) {
 
   if (type === 'message' && (user.name === 'neko' || user.name === 'sakir')) {
     if (text === 'open'){
+      openDoor();
       response = 'ok';
       channel.send(response);
       console.log('@%s responded with "%s"', slack.self.name, response);
