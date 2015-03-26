@@ -4,6 +4,7 @@ var config = require('./config')
 
 var gpio = require("pi-gpio");
 var pin = 11;
+var relayOpen = false;
 
 // require('coffee-script/register');
 var Slack = require('slack-client');
@@ -29,11 +30,6 @@ app.get('/', function (req, res) {
   res.send('Hello World!')
 })
 
-app.get('/open', function (req, res) {
-  openDoor();
-    res.send('done!');
-
-});
 var server = app.listen(3000, function () {
 
   var host = server.address().address
@@ -55,8 +51,23 @@ slack.on('message', function(message) {
   console.log('Received: %s %s @%s %s "%s"', type, (channel.is_channel ? '#' : '') + channel.name, user.name, time, text);
 
   if (type === 'message' && (user.name === 'neko' || user.name === 'sakir')) {
-    if (text === 'open'){
-      openDoor();
+    if (text === 'open' || (text.indexOf('open ') === 0)){
+      
+      if(text === 'open'){
+        doorTimeout = 1;
+      }else{
+        doorTimeout = parseInt( text.replace("open ", "") );
+      }
+
+      if(doorTimeout > 10){
+        doorTimeout = 1;
+      }
+
+      if (doorTimeout == 0){
+        closeRelay();
+      }else{
+        openDoor(doorTimeout);
+      }
       response = 'ok';
       channel.send(response);
       console.log('@%s responded with "%s"', slack.self.name, response);
@@ -70,12 +81,21 @@ slack.on('error', function(error) {
 
 slack.login();
 /* /slack */
-function openDoor(){
-  console.log('open called');
-  gpio.write(pin, 0, function() {});
+function openDoor(doorTimeout){
+  doorTimeout = doorTimeout || 1;
+  if(!relayOpen){
+    relayOpen = true;
+    console.log('open called');
+    gpio.write(pin, 0, function() {});
 
-    setTimeout(function() {
-        gpio.write(pin, 1, function(){});
-      console.log('closed!')
-    }, 1000);
+      setTimeout(function() {
+          closeRelay();
+      }, (doorTimeout * 1000));
+  }
+}
+
+function closeRelay(){
+  gpio.write(pin, 1, function(){});
+  console.log('closed!');
+  relayOpen = false;
 }
