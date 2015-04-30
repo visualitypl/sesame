@@ -2,6 +2,15 @@ var express = require('express')
 var app = express()
 var config = require('./config')
 
+/* airbrake */
+if ( config.USE_AIRBRAKE ){
+  var airbrake = require('airbrake').createClient(config.AIRBRAKE_API_KEY, 'production');
+  airbrake.serviceHost = config.AIRBRAKE_SERVICE_HOST;
+  app.use(airbrake.expressHandler());
+}
+throw new Error('I am an uncaught exception');
+/**/
+
 var gpio = require("pi-gpio");
 var pin = 11;
 var relayOpen = false;
