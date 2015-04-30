@@ -48,6 +48,10 @@ slack.on('message', function(message) {
       text = message.text,
       response = '';
 
+  if (user === undefined){
+    /* skip channel messages(skip the messages which are not sent to sesame directly) */
+    return true;
+  }
   console.log('Received: %s %s @%s %s "%s"', type, (channel.is_channel ? '#' : '') + channel.name, user.name, time, text);
 
   if (type === 'message' && (user.name === 'neko' || user.name === 'sakir')) {
