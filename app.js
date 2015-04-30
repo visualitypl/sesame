@@ -8,7 +8,6 @@ if ( config.USE_AIRBRAKE ){
   airbrake.serviceHost = config.AIRBRAKE_SERVICE_HOST;
   app.use(airbrake.expressHandler());
 }
-throw new Error('I am an uncaught exception');
 /**/
 
 var gpio = require("pi-gpio");
