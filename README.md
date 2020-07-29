@@ -1,3 +1,8 @@
+# Archived
+
+This project's support has been ceased. No future fixes or pull requests are planned.
+
+
 # Sesame
 
 ### NodeJS based door opener
